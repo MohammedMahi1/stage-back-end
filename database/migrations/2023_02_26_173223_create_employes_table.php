@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('CIN');
-
+            $table->string('interet');
             $table->string('type');
             $table->timestamps();
         });

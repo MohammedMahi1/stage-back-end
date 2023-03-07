@@ -40,14 +40,14 @@ class DirectorController extends Controller
             'password' => 'required|min:6|max:8',
         ]);
         if ($valide) {
-            $addemp = SuperAdmin::create([
+            $addsuperadmin = SuperAdmin::create([
                 'fullname' => $request->fullname,
                 'CIN' => $request->CIN,
                 'username'=>$request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            $addemp->save();
+            $addsuperadmin->save();
             return Response([
                 'message' => 'Super admin has been add succes'
             ]);

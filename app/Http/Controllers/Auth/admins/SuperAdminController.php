@@ -8,6 +8,8 @@ use App\Models\Auth\admins\AdminFinancieres;
 use App\Models\Auth\admins\AdminTechniques;
 use App\Models\Auth\admins\SuperAdmin;
 use App\Models\Auth\employe\Employe;
+use App\Models\Courrier\Arriver;
+use App\Models\Courrier\Depart;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -24,13 +26,12 @@ class SuperAdminController extends Controller
     public function login(Request $request): Response
     {
         $superadmin = $request->validate([
-            'username' => 'required|string|rgex:',
+            'username' => 'required|string',
             'password' => 'required|string|min:6|max:8',
         ]);
 
         if (Auth::guard('superadmin')->attempt($superadmin)) {
             $superadmin = SuperAdmin::where('username', $request->username)->first();
-
             if ($superadmin && Hash::check($request->password, $superadmin->password)) {
                 $device = $request->userAgent();
                 $token = $superadmin->createToken($device)->plainTextToken;
@@ -72,11 +73,15 @@ class SuperAdminController extends Controller
         $admin_financieres = AdminFinancieres::all();
         $admin_techniques = AdminTechniques::all();
         $employe = Employe::all();
+        $arriver = Arriver::all();
+        $depart = Depart::all();
         return Response([
             'AdminAdministratives' => $admin_administrative,
             'AdminFinancieres' => $admin_financieres,
             'AdminTechniques' => $admin_techniques,
             'Employe' => $employe,
+            'Arriver' => $arriver,
+            'Depart' => $depart,
         ]);
     }
 
@@ -89,6 +94,7 @@ class SuperAdminController extends Controller
             'password' => 'required|min:6|max:8',
             'CIN' => 'required|min:8|max:12',
             'type' => 'required|string',
+            'interet'=>'required|string',
         ]);
         if ($valide) {
             $addemp = Employe::create([
@@ -97,6 +103,7 @@ class SuperAdminController extends Controller
                 'password' => Hash::make($request->password),
                 'CIN' => $request->CIN,
                 'type' => $request->type,
+                'interet'=>$request->interet,
             ]);
             $addemp->save();
             return Response([
@@ -158,8 +165,8 @@ class SuperAdminController extends Controller
     {
         //fullname	CIN	email	password
         $valide = $request->validate([
-            'fullname' => 'required',
-            'CIN' => 'required|min:6|max:8',
+            'fullname' => 'required|string',
+            'CIN' => 'required|string|min:6|max:8',
             'email' => 'required|email',
             'password' => 'required|min:8|max:8'
         ]);

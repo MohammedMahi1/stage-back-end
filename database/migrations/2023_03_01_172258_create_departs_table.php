@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('departs', function (Blueprint $table) {
-            $table->id();
+            $table->id('numero');
+            $table->date('date_de_fichier');
+            $table->string('objectif');
+            $table->string('expediteur');
+            $table->string('type_de_class');
+            $table->string('interet');
+            $table->string('employere');
+            $table->string('type_de_courier');
+            $table->date('date_de_commission');
+            $table->date('date_specifiee');
             $table->timestamps();
         });
     }

@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('arrivers', function (Blueprint $table) {
-            $table->id();
+            $table->id('numero');
+            $table->date('date_de_fichier')->nullable(null);
+            $table->string('objectif');
+            $table->string('expediteur');
+            $table->string('destinataire');
+            $table->string('interet');
+            $table->string('employere');
             $table->timestamps();
         });
     }
