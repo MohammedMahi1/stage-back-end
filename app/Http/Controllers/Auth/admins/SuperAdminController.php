@@ -75,7 +75,9 @@ class SuperAdminController extends Controller
         $employe = Employe::all();
         $arriver = Arriver::all();
         $depart = Depart::all();
+        $superadmin = Auth::user();
         return Response([
+            'datas' => [$superadmin],
             'AdminAdministratives' => $admin_administrative,
             'AdminFinancieres' => $admin_financieres,
             'AdminTechniques' => $admin_techniques,
@@ -94,7 +96,7 @@ class SuperAdminController extends Controller
             'password' => 'required|min:6|max:8',
             'CIN' => 'required|min:8|max:12',
             'type' => 'required|string',
-            'interet'=>'required|string',
+            'interet' => 'required|string',
         ]);
         if ($valide) {
             $addemp = Employe::create([
@@ -103,7 +105,7 @@ class SuperAdminController extends Controller
                 'password' => Hash::make($request->password),
                 'CIN' => $request->CIN,
                 'type' => $request->type,
-                'interet'=>$request->interet,
+                'interet' => $request->interet,
             ]);
             $addemp->save();
             return Response([
@@ -166,7 +168,7 @@ class SuperAdminController extends Controller
         //fullname	CIN	email	password
         $valide = $request->validate([
             'fullname' => 'required|string',
-            'CIN' => 'required|string|min:6|max:8',
+            'CIN' => 'required|string|min:6|max:12',
             'email' => 'required|email',
             'password' => 'required|min:8|max:8'
         ]);
@@ -237,10 +239,10 @@ class SuperAdminController extends Controller
     {
         //fullname	CIN	email	password
         $valide = $request->validate([
-            'fullname' => 'required',
-            'CIN' => 'required|min:6|max:8',
+            'fullname' => 'required|string',
+            'CIN' => 'required|string|min:6|max:8',
             'email' => 'required|email',
-            'password' => 'required|min:8|max:8'
+            'password' => 'required|string|min:8|max:8'
         ]);
         if ($valide) {
             $add = AdminFinancieres::create([
