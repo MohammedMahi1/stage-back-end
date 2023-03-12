@@ -43,6 +43,10 @@ return [
         'superadmin'=>[
             'driver' => 'session',
             'provider' => 'superadmins',
+        ],
+        'employe'=>[
+            'driver' => 'session',
+            'provider' => 'employes',
         ]
     ],
 
@@ -71,6 +75,10 @@ return [
         'superadmins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Auth\admins\SuperAdmin::class,
+        ],
+        'employes' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Auth\employe\Employe::class,
         ],
 
 
@@ -108,6 +116,12 @@ return [
         ],
         'superadmins' => [
             'provider' => 'superadmins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'employes' => [
+            'provider' => 'employes',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
