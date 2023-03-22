@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\admins\SuperAdminController;
 Route::get('/',[SuperAdminController::class,'index']);
 Route::post('/login',[SuperAdminController::class,'login'])->middleware('guest:sanctum');
 Route::delete('/logout/{token?}',[SuperAdminController::class,'logout']);
-
+Route::post('/addImageProfile',[SuperAdminController::class,'addImageProfile']);
 
 // Add-Edit-Delete => Employe
 Route::post('/addEmploye',[SuperAdminController::class,'addEmploye']);

@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class SuperAdminController extends Controller
@@ -65,7 +67,51 @@ class SuperAdminController extends Controller
             'message' => 'logout successful',
         ]);
     }
+    public function addImageProfile(Request $request): Response
+    {
+        $request->validate([
+            'image_profile' => 'nullable',
+            'image_url' => 'sometimes',
+        ]);
+        $superadmin = Auth::user();
+        if ($request->hasFile("image_profile")) {
+            $exist = Storage::disk('public')->exists("superadmin/image/{$superadmin->image_profile}");
+            if ($exist) {
+                Storage::disk('public')->delete("superadmin/image/{$superadmin->image_profile}");
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
 
+                $path = Storage::disk('public')->putFileAs('superadmin/image', $img, $imageName);
+                $exis = $superadmin->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+            else{
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+                $path = Storage::disk('public')->putFileAs('superadmin/image', $img, $imageName);
+                $exis = $superadmin->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+
+        }
+        return Response([
+            'message'=>'not good'
+        ]);
+    }
     //super admin of bureau d'order
     public function index(): Response
     {
@@ -77,7 +123,7 @@ class SuperAdminController extends Controller
         $depart = Depart::all();
         $superadmin = Auth::user();
         return Response([
-            'datas' => [$superadmin],
+            'datas' => $superadmin,
             'AdminAdministratives' => $admin_administrative,
             'AdminFinancieres' => $admin_financieres,
             'AdminTechniques' => $admin_techniques,
@@ -106,6 +152,8 @@ class SuperAdminController extends Controller
                 'CIN' => $request->CIN,
                 'type' => $request->type,
                 'interet' => $request->interet,
+                'image_profile' => 'nullable',
+                'image_url' => 'sometimes',
             ]);
             $addemp->save();
             return Response([

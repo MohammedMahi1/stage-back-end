@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('CIN');
             $table->string('interet');
             $table->string('type');
+            $table->string('image_profile')->nullable();
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

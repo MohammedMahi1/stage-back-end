@@ -17,5 +17,7 @@ class SuperAdmin extends Authenticatable
         'username',
         'email',
         'password',
+        'image_profile',
+        'image_url'
     ];
 }

@@ -47,7 +47,15 @@ return [
         'employe'=>[
             'driver' => 'session',
             'provider' => 'employes',
-        ]
+        ],
+        'director'=>[
+            'driver' => 'session',
+            'provider' => 'directors',
+        ],
+        'president'=>[
+            'driver' => 'session',
+            'provider' => 'presidents',
+        ],
     ],
 
     /*
@@ -80,7 +88,14 @@ return [
             'driver' => 'eloquent',
             'model' => \App\Models\Auth\employe\Employe::class,
         ],
-
+        'directors' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Directory\Director::class,
+        ],
+        'presidents' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Directory\President::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -122,6 +137,18 @@ return [
         ],
         'employes' => [
             'provider' => 'employes',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'directors' => [
+            'provider' => 'directors',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'presidents' => [
+            'provider' => 'presidents',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

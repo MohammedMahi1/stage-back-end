@@ -11,3 +11,5 @@ Route::delete('/logout/{token?}',[EmployeController::class,'logout']);
 
 Route::get('/',[EmployeController::class, 'index']);
 Route::post('/addArriver',[EmployeController::class, 'addArriver']);
+Route::post('/addDepart',[EmployeController::class, 'addDepart']);
+Route::post('/addImageProfile',[EmployeController::class,'addImageProfile']);

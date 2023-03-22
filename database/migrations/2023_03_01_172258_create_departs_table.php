@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('departs', function (Blueprint $table) {
             $table->id('numero');
-            $table->date('date_de_fichier');
+            $table->date('date_de_fichier')->nullable(null);
             $table->string('objectif');
             $table->string('expediteur');
             $table->string('type_de_class');
             $table->string('interet');
             $table->string('employere');
             $table->string('type_de_courier');
-            $table->date('date_de_commission');
-            $table->date('date_specifiee');
+            $table->date('date_de_commission')->nullable(null);
+            $table->date('date_specifiee')->nullable(null);
             $table->timestamps();
         });
     }
