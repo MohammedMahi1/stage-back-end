@@ -10,5 +10,12 @@ use Laravel\Sanctum\HasApiTokens;
 class Director extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $guarded = [];
+    protected $fillable = [
+        'fullname',
+        'username',
+        'email',
+        'password',
+        'image_profile',
+        'image_url',
+    ];
 }

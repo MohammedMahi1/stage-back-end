@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class DirectorController extends Controller
@@ -84,12 +86,14 @@ class DirectorController extends Controller
     }
     public function index():Response
     {
+        $datas = Auth::user();
         $super_admin = SuperAdmin::all();
         $admin_administrative = AdminAdministrative::all();
         $admin_financieres = AdminFinancieres::all();
         $admin_techniques = AdminTechniques::all();
         $employe = Employe::all();
         return Response([
+            'datas'=>$datas,
             'SuperAdmin' => $super_admin,
             'AdminAdministratives' => $admin_administrative,
             'AdminFinancieres' => $admin_financieres,
@@ -122,6 +126,51 @@ class DirectorController extends Controller
         }
         return Response([
             'message' => 'your data is have some error validation'
+        ]);
+    }
+    public function addImageProfile(Request $request): Response
+    {
+        $request->validate([
+            'image_profile' => 'nullable',
+            'image_url' => 'sometimes',
+        ]);
+        $director = Auth::user();
+        if ($request->hasFile("image_profile")) {
+            $exist = Storage::disk('public')->exists("director/image/{$director->image_profile}");
+            if ($exist) {
+                Storage::disk('public')->delete("director/image/{$director->image_profile}");
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+
+                $path = Storage::disk('public')->putFileAs('director/image', $img, $imageName);
+                $exis = $director->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+            else{
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+                $path = Storage::disk('public')->putFileAs('director/image', $img, $imageName);
+                $exis = $director->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+
+        }
+        return Response([
+            'message'=>'not good'
         ]);
     }
 }

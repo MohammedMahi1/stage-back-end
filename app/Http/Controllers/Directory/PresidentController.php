@@ -16,6 +16,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class PresidentController extends Controller
@@ -106,6 +108,51 @@ class PresidentController extends Controller
         $created->save();
         return Response([
            'message' =>'Success'
+        ]);
+    }
+    public function addImageProfile(Request $request): Response
+    {
+        $request->validate([
+            'image_profile' => 'nullable',
+            'image_url' => 'sometimes',
+        ]);
+        $president = Auth::user();
+        if ($request->hasFile("image_profile")) {
+            $exist = Storage::disk('public')->exists("president/image/{$president->image_profile}");
+            if ($exist) {
+                Storage::disk('public')->delete("president/image/{$president->image_profile}");
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+
+                $path = Storage::disk('public')->putFileAs('president/image', $img, $imageName);
+                $exis = $president->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+            else{
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+                $path = Storage::disk('public')->putFileAs('president/image', $img, $imageName);
+                $exis = $president->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
+                    ]);
+                }
+            }
+
+        }
+        return Response([
+            'message'=>'not good'
         ]);
     }
 }

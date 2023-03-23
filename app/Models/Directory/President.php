@@ -15,5 +15,7 @@ class President extends Authenticatable
         'username',
         'email',
         'password',
+        'image_profile',
+        'image_url',
     ];
 }
