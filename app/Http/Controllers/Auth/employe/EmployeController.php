@@ -134,11 +134,13 @@ class EmployeController extends Controller
             'expediteur' => 'required|string',
             'objectif' => 'required|string',
         ]);
+        $type = Auth::user()->type;
         $arriver = Arriver::create([
             'destinataire' => $request->destinataire,
             'expediteur' => $request->expediteur,
             'objectif' => $request->objectif,
             'interet' => $request->interet,
+            'type' => $type,
             'date_de_fichier' => $request->date_de_fichier,
             'employere' => $request->employere,
         ]);

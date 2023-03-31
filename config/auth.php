@@ -56,6 +56,15 @@ return [
             'driver' => 'session',
             'provider' => 'presidents',
         ],
+        'administrative'=>[
+            'driver' => 'session',
+            'provider' => 'administratives',
+        ],
+        'finenciere'=>[
+            'driver' => 'session',
+            'provider' => 'finencieres',
+        ],
+
     ],
 
     /*
@@ -95,6 +104,14 @@ return [
         'presidents' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Directory\President::class,
+        ],
+        'administratives' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Auth\admins\AdminAdministrative::class,
+        ],
+        'finencieres' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Auth\admins\AdminFinancieres::class,
         ],
 
         // 'users' => [
@@ -149,6 +166,18 @@ return [
         ],
         'presidents' => [
             'provider' => 'presidents',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'administratives' => [
+            'provider' => 'administratives',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'finencieres' => [
+            'provider' => 'finencieres',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

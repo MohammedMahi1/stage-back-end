@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'guard' => ['web','superadmin','employe','president', 'director'],
+    'guard' => ['web','superadmin','employe','administrative','finenciere','president', 'director'],
 
     /*
     |--------------------------------------------------------------------------

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('expediteur');
             $table->string('destinataire');
             $table->string('interet');
+            $table->string('type');
             $table->string('employere');
             $table->timestamps();
         });
